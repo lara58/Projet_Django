@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Attraction, Compilation, Review, SimilarAttraction, AttractionPhoto
+from .models import Attraction, Compilation, Review, SimilarAttraction, AttractionPhoto, Profile
 
 class AttractionPhotoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,4 +26,9 @@ class ReviewSerializer(serializers.ModelSerializer):
 class SimilarAttractionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimilarAttraction
+        fields = '__all__'
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
         fields = '__all__'
