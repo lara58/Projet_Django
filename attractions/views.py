@@ -1,9 +1,8 @@
 from django.shortcuts import render
-
-from .models import Attraction
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import AttractionSerializer
+from .models import Attraction, Compilation, Review, SimilarAttraction, AttractionPhoto
+from .serializers import AttractionSerializer, CompilationSerializer, ReviewSerializer, SimilarAttractionSerializer, AttractionPhotoSerializer
 
 @api_view(['GET'])
 def get_attractions(request):
@@ -11,3 +10,26 @@ def get_attractions(request):
     serializer = AttractionSerializer(attractions, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_compilations(request):
+    compilations = Compilation.objects.all()
+    serializer = CompilationSerializer(compilations, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_reviews(request):
+    reviews = Review.objects.all()
+    serializer = ReviewSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_similar_attractions(request):
+    similar_attractions = SimilarAttraction.objects.all()
+    serializer = SimilarAttractionSerializer(similar_attractions, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_attraction_photos(request):
+    photos = AttractionPhoto.objects.all()
+    serializer = AttractionPhotoSerializer(photos, many=True)
+    return Response(serializer.data)
