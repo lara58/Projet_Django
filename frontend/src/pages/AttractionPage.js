@@ -4,7 +4,7 @@ import axios from 'axios';
 const AttractionPage = ({ match }) => {
   const [attraction, setAttraction] = useState(null);
   const { id } = match.params; // Get the attraction ID from the URL
-
+///////
   useEffect(() => {
     axios.get(`API_ENDPOINT/${id}`)
       .then(response => {
