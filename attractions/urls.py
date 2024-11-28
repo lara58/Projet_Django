@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from .views import attractions_view
+
 
 urlpatterns = [
     path('attractions/', views.get_attractions, name='get_attractions'),
@@ -8,4 +10,5 @@ urlpatterns = [
     path('similar-attractions/', views.get_similar_attractions, name='get_similar_attractions'),
     path('attraction-photos/', views.get_attraction_photos, name='get_attraction_photos'),
     path('profiles/', views.get_profiles, name='get_profiles'),
+    path('attractions/<int:location_id>/', attractions_view, name='attractions'),
 ]

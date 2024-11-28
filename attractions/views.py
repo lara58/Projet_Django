@@ -3,7 +3,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Attraction, Compilation, Review, SimilarAttraction, AttractionPhoto, Profile
 from .serializers import AttractionSerializer, CompilationSerializer, ReviewSerializer, SimilarAttractionSerializer, AttractionPhotoSerializer, ProfileSerializer
+from django.shortcuts import render
+from .services import get_tripadvisor_attractions
 
+def attractions_view(request, location_id):
+    try:
+        attractions = get_tripadvisor_attractions(location_id)
+        return render(request, 'attractions.html', {'attractions': attractions})
+    except Exception as e:
+        return render(request, 'error.html', {'error': str(e)})
+    
 @api_view(['GET'])
 def get_attractions(request):
     attractions = Attraction.objects.all()
