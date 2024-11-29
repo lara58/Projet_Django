@@ -66,6 +66,8 @@ def get_location_photos(location_id, language="en"):
     params = {
         "locationId": location_id,  # ID de la localisation pour récupérer les photos
         "language": language,  # Langue des résultats
+        "key": TRIPADVISOR_API_KEY,
+        "limit": 5,  # Limite du nombre de photos
     }
     cache_key = f"location_photos_{location_id}_{language}"
     return fetch_from_tripadvisor(url, params, cache_key)

@@ -70,10 +70,16 @@ def get_similar_attractions(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_attraction_photos(request):
-    photos = AttractionPhoto.objects.all()
-    serializer = AttractionPhotoSerializer(photos, many=True)
-    return Response(serializer.data)
+def get_attraction_photos(request, location_id):
+    try:
+        photos = get_location_photos(location_id)
+        if photos:
+            return Response(photos, status=200)
+        else:
+            return Response({'error': 'No photos found for this location'}, status=404)
+    except Exception as e:
+        print(f"Erreur dans get_attraction_photos: {e}")  # Journaux dans la console
+        return Response({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_profiles(request):
