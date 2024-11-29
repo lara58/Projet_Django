@@ -5,24 +5,37 @@ import axios from 'axios';
 
 const HomePage = () => {
   const [attractions, setAttractions] = useState([]);
+  const [profile, setProfile] = useState('');
+  const [country, setCountry] = useState('');
 
-  const fetchAttractions = async () => {
+  useEffect(() => {
+    // Récupérer le profil et le pays depuis le localStorage
+    const storedProfile = localStorage.getItem('profile');
+    const storedCountry = localStorage.getItem('country');
+    setProfile(storedProfile);
+    setCountry(storedCountry);
+
+    // Faire une requête à l'API avec le pays
+    if (storedCountry) {
+      fetchAttractions(storedCountry);
+    }
+  }, []);
+
+  const fetchAttractions = async (country) => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/attractions/', {
-        params: {
-          country: 'France' 
-        }
+        params: { country }
       });
-      setAttractions(response.data);
+      if (response.data && Array.isArray(response.data.data)) {
+        setAttractions(response.data.data);
+      } else {
+        console.error('Unexpected response data:', response.data);
+      }
       console.log('Attractions:', response.data);
     } catch (error) {
       console.error('Error fetching attractions:', error);
     }
   };
-
-  useEffect(() => {
-    fetchAttractions();
-  }, []);
 
   return (
     <div>
