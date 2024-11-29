@@ -1,4 +1,3 @@
-// src/components/Carousel.js
 import React, { useState } from 'react';
 import AttractionCard from './AttractionCard';
 
@@ -30,22 +29,32 @@ const carouselStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '20px',
+    gap: '20px',  // Espacement entre les boutons et le carousel
   },
   carousel: {
-    margin: '0 15px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
+    maxWidth: '300px',  // Limite la largeur du carousel
+    overflow: 'hidden',  // Masque les éléments qui dépassent du container
+    transition: 'transform 0.5s ease',  // Ajoute une transition lors du changement de slide
   },
   button: {
     backgroundColor: '#39ff14',
     color: 'white',
     border: 'none',
-    padding: '10px',
-    fontSize: '20px',
+    padding: '15px',
+    fontSize: '24px',
     cursor: 'pointer',
-    borderRadius: '5px',
+    borderRadius: '50%',  // Rendre les boutons ronds
+    transition: 'background-color 0.3s, transform 0.3s',  // Effet au survol
+    width: '50px',
+    height: '50px',
+  },
+  buttonHover: {
+    backgroundColor: '#32cc16',
+    transform: 'scale(1.1)',  // Agrandir les boutons au survol
   },
 };
 

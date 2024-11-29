@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Attraction, Compilation, Review, SimilarAttraction, AttractionPhoto, Profile
@@ -6,7 +5,26 @@ from .serializers import AttractionSerializer, CompilationSerializer, ReviewSeri
 
 @api_view(['GET'])
 def get_attractions(request):
+    profile = request.GET.get('profile')  # Récupère le paramètre 'profile'
+    country = request.GET.get('country')  # Récupère le paramètre 'country'
+
+    # Filtrer les attractions en fonction du pays et du profil
     attractions = Attraction.objects.all()
+
+    if country:
+        attractions = attractions.filter(country=country)
+    
+    # Filtrage basé sur le profil
+    if profile:
+        # Exemple de filtrage par 'category' basé sur le profil (à adapter selon vos données)
+        if profile == 'local':
+            attractions = attractions.filter(category__icontains='local')  # Adaptez le filtre selon vos champs
+        elif profile == 'tourist':
+            attractions = attractions.filter(category__icontains='tourist')  # Adaptez le filtre selon vos besoins
+        elif profile == 'professional':
+            attractions = attractions.filter(category__icontains='professional')  # Idem
+
+    # Sérialiser les résultats
     serializer = AttractionSerializer(attractions, many=True)
     return Response(serializer.data)
 

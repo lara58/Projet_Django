@@ -6,7 +6,6 @@ import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import AttractionPage from './pages/AttractionPage';
 import Navbar from './components/Navbar';
-
 const App = () => {
   return (
     <Router>

@@ -1,8 +1,8 @@
+# attractions/urls.py
 from django.urls import path
 from . import views
-
 urlpatterns = [
-    path('attractions/', views.get_attractions, name='get_attractions'),
+    path('attractions/', views.get_attractions, name='get_attractions'),  # Route correcte pour /api/attractions/
     path('compilations/', views.get_compilations, name='get_compilations'),
     path('reviews/', views.get_reviews, name='get_reviews'),
     path('similar-attractions/', views.get_similar_attractions, name='get_similar_attractions'),
