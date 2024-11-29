@@ -12,6 +12,7 @@ class Profile(models.Model):
     profile_type = models.CharField(max_length=20, choices=PROFILE_CHOICES)
     country = models.CharField(max_length=100)
 
+
     def __str__(self):
         return f"{self.user.username} - {self.profile_type}"
 
@@ -63,6 +64,7 @@ class Compilation(models.Model):
     attractions = models.ManyToManyField(Attraction)
     total_budget = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     total_distance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Optional
+
 
     def __str__(self):
         return f"{self.user.username}'s Compilation"

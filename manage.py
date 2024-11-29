@@ -2,7 +2,18 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from dotenv import load_dotenv
 
+
+load_dotenv()  # Charge les variables depuis .env
+
+# Vérification des variables essentielles
+if not os.getenv('TRIPADVISOR_API_KEY'):
+    raise EnvironmentError("La clé API TripAdvisor manque dans le fichier .env.")
+if not os.getenv('MONGO_URI'):
+    raise EnvironmentError("L'URI MongoDB manque dans le fichier .env.")
+if not os.getenv('REDIS_HOST') or not os.getenv('REDIS_PORT'):
+    raise EnvironmentError("La configuration Redis est incomplète.")
 
 def main():
     """Run administrative tasks."""
@@ -20,3 +31,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

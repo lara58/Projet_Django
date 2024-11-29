@@ -1,11 +1,10 @@
 from django.urls import path
-from . import views
+from .views import get_attraction_photos, get_attractions, get_compilations,  get_attraction_reviews, get_attraction_details_view
+
 
 urlpatterns = [
-    path('attractions/', views.get_attractions, name='get_attractions'),
-    path('compilations/', views.get_compilations, name='get_compilations'),
-    path('reviews/', views.get_reviews, name='get_reviews'),
-    path('similar-attractions/', views.get_similar_attractions, name='get_similar_attractions'),
-    path('attraction-photos/', views.get_attraction_photos, name='get_attraction_photos'),
-    path('profiles/', views.get_profiles, name='get_profiles'),
-]
+    path('attractions/', get_attractions, name='get_attractions'),
+    path('compilations/', get_compilations, name='get_compilations'),
+    path('reviews/<int:location_id>/', get_attraction_reviews, name='get_reviews'),
+    path('photos/<int:location_id>/', get_attraction_photos, name='get_attraction_photos'),
+    path('attractions/<int:location_id>/', get_attraction_details_view, name='get_attraction_details'),]
