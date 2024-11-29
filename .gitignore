@@ -1,9 +1,12 @@
 # Ignorer le dossier de l'environnement virtuel
 tuto-env/
+node_modules/
+__pycache__/
 
 # Autres fichiers générés ou inutiles à ignorer globalement
 *.log
 *.sqlite3
+*.pyc
 .env
 .DS_Store
 Thumbs.db
