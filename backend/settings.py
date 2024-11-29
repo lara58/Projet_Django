@@ -107,7 +107,7 @@ DATABASES = {
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Ajoutez l'URL de votre frontend React
+    "http://localhost:3000",  
     "http://127.0.0.1:3000",
 ]
 
