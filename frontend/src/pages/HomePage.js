@@ -4,16 +4,28 @@ import axios from 'axios';
 
 const HomePage = () => {
   const [attractions, setAttractions] = useState([]);
-  
-  useEffect(() => {
-    // Récupérer les attractions de l'API
-    axios.get('http://127.0.0.1:8000/api/attractions/')
-      .then(response => {
-        setAttractions(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching attractions:', error);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchAttractions = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/attractions/', {
+        params: {
+          country: 'France'
+        }
       });
+      setAttractions(response.data);
+      setLoading(false);
+      console.log('Attractions:', response.data);
+    } catch (error) {
+      console.error('Error fetching attractions:', error);
+      setError('Failed to fetch attractions');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAttractions();
   }, []);
 
   return (
@@ -32,7 +44,11 @@ const HomePage = () => {
 
       <div style={styles.attractions}>
         {/* Afficher les cartes d'attractions */}
-        {attractions.length > 0 ? (
+        {loading ? (
+          <p>Chargement...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : attractions.length > 0 ? (
           attractions.map(attraction => (
             <AttractionCard key={attraction.id} attraction={attraction} />
           ))

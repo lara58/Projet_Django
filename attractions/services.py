@@ -15,22 +15,6 @@ TRIPADVISOR_API_KEY = os.getenv('TRIPADVISOR_API_KEY')
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Fonction générique pour gérer les appels API TripAdvisor avec cache
-def get_tripadvisor_attractions(location_id, limit=10, language="en"):
-    url = f"https://api.content.tripadvisor.com/api/v1/location/{location_id}/attractions"
-    headers = {
-        'X-TripAdvisor-API-Key': TRIPADVISOR_API_KEY
-    }
-    params = {
-        "locationId": location_id,
-        "limit": limit,
-        "language": language
-    }
-    response = requests.get(url, headers=headers, params=params)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        response.raise_for_status()
-
 def fetch_from_tripadvisor(url, params, cache_key):
     # Vérifier dans le cache
     cached_data = redis_client.get(cache_key)
@@ -55,7 +39,7 @@ def fetch_from_tripadvisor(url, params, cache_key):
 
 # Fonction pour rechercher des localisations (Location Search)
 def search_location(query, language="en"):
-    url = f"https://api.content.tripadvisor.com/api/v1/location/search"
+    url = "https://api.content.tripadvisor.com/api/v1/location/search"
     params = {
         "searchQuery": query,  # Terme de recherche (par exemple, un nom de ville)
         "language": language,  # Langue des résultats
@@ -70,6 +54,28 @@ def get_location_details(location_id):
         "locationId": location_id,  # ID de la localisation pour obtenir les détails
     }
     cache_key = f"location_details_{location_id}"
+    return fetch_from_tripadvisor(url, params, cache_key)
+
+# Fonction pour rechercher des attractions par pays
+def search_location(query, limit=10, language="en"):
+    url = "https://api.content.tripadvisor.com/api/v1/location/search"
+    params = {
+        "searchQuery": query,
+        "limit": limit,
+        "language": language,
+        "key": TRIPADVISOR_API_KEY,
+    }
+    cache_key = f"search_location_{query}_{limit}_{language}"
+    return fetch_from_tripadvisor(url, params, cache_key)
+
+# Fonction pour récupérer les détails d'une attraction
+def get_attraction_details(location_id, language="en"):
+    url = f"https://api.content.tripadvisor.com/api/v1/location/{location_id}/details"
+    params = {
+        "locationId": location_id,
+        "language": language,
+    }
+    cache_key = f"attraction_details_{location_id}_{language}"
     return fetch_from_tripadvisor(url, params, cache_key)
 
 # Fonction pour récupérer les photos d'une localisation (Location Photos)

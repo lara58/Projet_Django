@@ -13,6 +13,22 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from mongoengine import connect
+
+load_dotenv()
+
+# MongoDB Settings
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/easyattract')
+
+# PyMongo Exemple
+from pymongo import MongoClient
+mongo_client = MongoClient(MONGO_URI)
+mongo_db = mongo_client.get_database()
+
+# MongoEngine Exemple
+from mongoengine import connect
+connect(host=MONGO_URI)
+
 
 # Charger les variables d'environnement à partir du fichier .env
 load_dotenv()
@@ -46,6 +62,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'attractions',
+    'attractions',
+
+    'rest_framework',
+    'django_filters',
     'corsheaders',
 ]
 
@@ -58,6 +78,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -91,6 +114,22 @@ DATABASES = {
     }
 }
 
+# CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+    "http://127.0.0.1:3000",
+]
+
+# Redis Cache Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}/1",
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
