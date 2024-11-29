@@ -55,6 +55,7 @@ def get_attraction_details(location_id, language="en"):
     params = {
         "locationId": location_id,
         "language": language,
+        "key": TRIPADVISOR_API_KEY,
     }
     cache_key = f"attraction_details_{location_id}_{language}"
     return fetch_from_tripadvisor(url, params, cache_key)
