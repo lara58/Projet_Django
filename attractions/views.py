@@ -39,15 +39,29 @@ def get_attractions(request):
 
 @api_view(['GET'])
 def get_compilations(request):
-    compilations = Compilation.objects.all()
-    serializer = CompilationSerializer(compilations, many=True)
-    return Response(serializer.data)
+    try:
+        compilations = Compilation.objects.all()
+        if compilations:
+            serializer = CompilationSerializer(compilations, many=True)
+            return Response(serializer.data, status=200)
+        else:
+            return Response({'error': 'No compilations found'}, status=404)
+    except Exception as e:
+        print(f"Erreur dans get_compilations: {e}")  # Journaux dans la console
+        return Response({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_reviews(request):
-    reviews = Review.objects.all()
-    serializer = ReviewSerializer(reviews, many=True)
-    return Response(serializer.data)
+    try:
+        reviews = Review.objects.all()
+        if reviews:
+            serializer = ReviewSerializer(reviews, many=True)
+            return Response(serializer.data, status=200)
+        else:
+            return Response({'error': 'No reviews found'}, status=404)
+    except Exception as e:
+        print(f"Erreur dans get_reviews: {e}")  # Journaux dans la console
+        return Response({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_similar_attractions(request):
@@ -71,6 +85,10 @@ def get_profiles(request):
 def get_attraction_details_view(request, location_id):
     try:
         attraction_details = get_attraction_details(location_id)
-        return Response(attraction_details)
+        if attraction_details:
+            return Response(attraction_details, status=200)
+        else:
+            return Response({'error': 'No details found for this attraction'}, status=404)
     except Exception as e:
+        print(f"Erreur dans get_attraction_details_view: {e}")  # Journaux dans la console
         return Response({'error': str(e)}, status=500)
