@@ -73,14 +73,15 @@ def get_location_photos(location_id, language="en"):
     return fetch_from_tripadvisor(url, params, cache_key)
 
 # Fonction pour récupérer les reviews d'une localisation (Location Reviews)
-def get_location_reviews(location_id, limit=10, language="en"):
+def get_location_reviews(location_id, language="en"):
     url = f"https://api.content.tripadvisor.com/api/v1/location/{location_id}/reviews"
     params = {
-        "locationId": location_id,  # ID de la localisation pour récupérer les avis
-        "limit": limit,  # Limite du nombre d'avis à récupérer
-        "language": language,  # Langue des résultats
+        "locationId": location_id,
+        "limit": 10,
+        "language": language,
+        "key": TRIPADVISOR_API_KEY,
     }
-    cache_key = f"location_reviews_{location_id}_{limit}_{language}"
+    cache_key = f"location_reviews_{location_id}_{language}"
     return fetch_from_tripadvisor(url, params, cache_key)
 
 # Fonction pour sauvegarder des attractions dans MongoDB

@@ -5,7 +5,6 @@ from .models import Attraction, Compilation, Review, SimilarAttraction, Attracti
 from .serializers import AttractionSerializer, CompilationSerializer, ReviewSerializer, SimilarAttractionSerializer, AttractionPhotoSerializer, ProfileSerializer
 from django.shortcuts import render
 from .services import get_location_photos, get_location_reviews, save_attractions_to_mongo, search_location, get_attraction_details
-from .services2 import TripAdvisorService
 from django.http import JsonResponse
 from dotenv import load_dotenv
 import redis
@@ -50,18 +49,6 @@ def get_compilations(request):
         print(f"Erreur dans get_compilations: {e}")  # Journaux dans la console
         return Response({'error': str(e)}, status=500)
 
-@api_view(['GET'])
-def get_reviews(request):
-    try:
-        reviews = Review.objects.all()
-        if reviews:
-            serializer = ReviewSerializer(reviews, many=True)
-            return Response(serializer.data, status=200)
-        else:
-            return Response({'error': 'No reviews found'}, status=404)
-    except Exception as e:
-        print(f"Erreur dans get_reviews: {e}")  # Journaux dans la console
-        return Response({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_similar_attractions(request):
@@ -98,3 +85,14 @@ def get_attraction_details_view(request, location_id):
     except Exception as e:
         print(f"Erreur dans get_attraction_details_view: {e}")  # Journaux dans la console
         return Response({'error': str(e)}, status=500)
+
+@api_view(['GET'])
+def get_attraction_reviews(request, location_id):
+    try:
+        reviews = get_location_reviews(location_id)
+        if reviews:
+            return Response(reviews, status=200)
+        else:
+            return Response({'error': 'No reviews found for this location'}, status=404)
+    except Exception as e:
+        print(f"Erreur dans get_location_reviews: {e}")
