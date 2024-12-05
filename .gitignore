@@ -4,6 +4,5 @@ tuto-env/
 # Autres fichiers générés ou inutiles à ignorer globalement
 *.log
 *.sqlite3
-.env
 .DS_Store
 Thumbs.db
